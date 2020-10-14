@@ -1,16 +1,12 @@
 package main
 
 import (
-	"database/sql"
-	"encoding/csv"
 	"encoding/json"
 	"errors"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
-	"strconv"
 	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -56,7 +52,6 @@ type omdbMovie struct {
     Website string        `json:"Website"`
     Response string       `json:"Response"`
 }
-
 
 func movieHandler(w http.ResponseWriter, req *http.Request) {
     switch req.Method {
@@ -196,7 +191,11 @@ func movieGetHandler(w http.ResponseWriter, req *http.Request) {
     )
     result.Scan(&id, &imdbid, &movieName, &year, &score, &description)
     if imdbid == "" {
-        w.Write([]byte("No item has been found with the id: "+ imdbId))
+        res, err := retrieveNewMovie(imdbId)
+        if err != nil {
+            w.Write([]byte("No item has been found with the id: "+ imdbId))
+            return
+        }
         return
     }
     dbMovie := movie{
@@ -229,45 +228,6 @@ func importMovieDesc(req string , imdbid string) {
     prep.Exec(res.Plot, imdbid)
     db.Close()
     log.Println("Got desc for: " + imdbid + ", which is: " + res.Plot)
-}
-
-func importData() {
-    db := getDatabase()
-    defer db.Close()
-
-    csvFile, err := os.Open("watchlist.csv")
-    if err != nil {
-        log.Println(err)
-        return
-    }
-
-    r := csv.NewReader(csvFile)
-    if _, err := r.Read(); err != nil {
-        log.Println("ERRRROR terror")
-    }
-
-    for {
-        record, err := r.Read()
-        if err == io.EOF {
-            break
-        }
-
-        imdbId := record[1]
-        name := record[5]
-        year,_ := strconv.ParseFloat(record[10], 64)
-        score,_ := strconv.Atoi(record[8])
-        description := ""
-
-        newMovie := movie{
-            imdbId,
-            name,
-            score,
-            year,
-            description,
-        }
-        insertMovieInToDatabase(newMovie)
-    }
-
 }
 
 func main() {
@@ -321,32 +281,3 @@ func insertMovieInToDatabase(newMovie movie) {
     prep.Exec(newMovie.IMDBId, newMovie.Name, newMovie.Year, newMovie.Score)
 }
 
-func getDatabase() *sql.DB {
-    db, err := sql.Open("sqlite3", "watchlist.db")
-
-    if err != nil {
-        log.Fatalln("Couldn't open database", err)
-    }
-    return db
-}
-
-func createTable() {
-    db := getDatabase()
-    defer db.Close()
-    query := `
-        Create TABLE IF NOT EXISTS movies
-            (
-                id INTEGER PRIMARY KEY,
-                imdbid TEXT,
-                name TEXT,
-                year int,
-                score float,
-                desc TEXT
-            )`
-
-    prep, err := db.Prepare(query)
-    if err != nil {
-        log.Fatalln("db error:", err.Error())
-    }
-    prep.Exec()
-}
