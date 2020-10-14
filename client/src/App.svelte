@@ -1,18 +1,26 @@
 <script>
-  import Movie from './components/Movie.svelte';
-  import Loader from './components/Loader.svelte';
   import Form from './components/Form.svelte';
-  import apiService from './apiService'
+  import Movie from './components/Movie.svelte';
 
-  let movie;
-  let loading = false;
+  let search = false;
+  let searchString;
 
-  async function handleSearch(e) {
-    loading = true;
-    movie = await apiService.getMovie(e.detail.id);
-    loading = false;
+  function handleSearch(e) {
+    searchString = e.detail.id;
+    search = true;
   }
+
 </script>
+
+<main>
+  <div class="container">
+    <Form on:search={handleSearch}/>
+
+    {#if search}
+      <Movie imdbid={searchString}/>
+    {/if}
+  </div>
+</main>
 
 <style>
   .container {
@@ -24,15 +32,3 @@
     height: 100%;
   }
 </style>
-
-<main>
-  <div class="container">
-    <Form on:search={handleSearch}/>
-
-    {#if loading }
-      <Loader/>
-    {:else if movie}
-      <Movie bind:movie/>
-    {/if}
-  </div>
-</main>

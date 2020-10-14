@@ -1,7 +1,13 @@
 async function getMovie(movie) {
-    // console.log(movie);
-    let res = await fetch('https://swapi.dev/api/people/1')
-    let body = await res.json()
+    let url = `http://localhost:8080/movies/${movie}`;
+    console.log(url);
+    let res = await fetch(url, {
+        method: "get",
+        mode: 'cors',
+        credentials: 'include'
+    });
+    let body = await res.json();
+    console.log(body)
     return await body;
 }
 

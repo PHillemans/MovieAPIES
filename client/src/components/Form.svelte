@@ -11,6 +11,16 @@
   }
 </script>
 
+<div class="form-container">
+  <div class="form-title">
+    Search for a movie by IMDBId:
+  </div>
+  <form class="formpje" on:submit|preventDefault={emitSearch}>
+    <input bind:value={imdbID}>
+    <button type="submit" class="btn-search">Search</button>
+  </form>
+</div>
+
 <style>
   .form-title {
     padding: 20px;
@@ -29,13 +39,3 @@
     align-items: center;
   }
   </style>
-
-  <div class="form-container">
-    <div class="form-title">
-      Search for a movie by IMDBId:
-    </div>
-    <form class="formpje" on:submit|preventDefault={emitSearch}>
-      <input bind:value={imdbID}>
-      <button type="submit" class="btn-search">Search</button>
-    </form>
-  </div>
