@@ -11,7 +11,6 @@
 </script>
 
 <div>
-  <slot name="name">predetermined name</slot>
     {#await handleSearch(imdbid)}
       <Loader/>
     {:then movie}
