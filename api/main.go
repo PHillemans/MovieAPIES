@@ -18,6 +18,7 @@ func main() {
 }
 
 func moviesHandler(w http.ResponseWriter, req *http.Request) {
+    enableCors(&w)
     switch req.Method {
         case "GET":
             getMovies()
