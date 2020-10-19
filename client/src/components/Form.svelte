@@ -5,6 +5,7 @@
 
   const dispatch = createEventDispatcher();
   function emitSearch() {
+    console.log('hoi');
     dispatch('search', {
       id: imdbID
     })

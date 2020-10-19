@@ -5,5 +5,5 @@ import (
 )
 
 func enableCors(w *http.ResponseWriter) {
-    (*w).Header().Set("Access-Controll-Allow-Origin", "*")
+    (*w).Header().Set("Access-Control-Allow-Origin", "*")
 }

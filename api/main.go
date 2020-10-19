@@ -18,8 +18,7 @@ func main() {
 }
 
 func moviesHandler(w http.ResponseWriter, req *http.Request) {
-    // @TODO fix cors and make sending get requests work
-    enableCors(&w)
+    enableCors(&w) //TODO: Remove this on prod
     switch req.Method {
         case "GET":
             getMovies()
@@ -35,6 +34,7 @@ func moviesHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func movieHandler(w http.ResponseWriter, req *http.Request) {
+    enableCors(&w) //TODO: Remove this on prod
     switch req.Method {
     case "GET":
         movie := getMovie()

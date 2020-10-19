@@ -18,6 +18,7 @@ func getMovies() {
 }
 
 func getMovie() (movie) {
+    // TODO: Doe dit, maar dan met die oude code
     dbMovie := movie{
         "sdf",
         "movie",

@@ -4,7 +4,7 @@ async function getMovie(movie) {
     let res = await fetch(url, {
         method: "get",
         mode: 'cors',
-        credentials: 'include'
+        credentials: 'same-origin'
     });
     let body = await res.json();
     console.log(body)
