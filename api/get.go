@@ -1,30 +1,45 @@
 package main
 
 import (
-    "log"
+	"log"
+	"strings"
 )
-
-type movie struct {
-    IMDBId string           `json:"IMDBId"`
-    Name string             `json:"Name"`
-    Year string             `json:"Year"`
-    Score string            `json:"Score"`
-    Description string      `json:"Description"`
-}
 
 func getMovies() {
     log.Println("GET")
     return
 }
 
-func getMovie() (movie) {
-    // TODO: Doe dit, maar dan met die oude code
+func getMovie(requestURI string) (movie) {
+    var imdbId string
+    imdbId = strings.Split(requestURI, "movies/")[1]
+
+    db := getDatabase();
+
+    query := "SELECT * FROM movies WHERE imdbid is ?;"
+
+    prep, _ := db.Prepare(query)
+    result := prep.QueryRow(imdbId)
+
+    var (
+        id string
+        imdbid string
+        movieName string
+        year string
+        score string
+        description string
+    )
+
+    result.Scan(&id, &imdbid, &movieName, &year, &score, &description)
+
     dbMovie := movie{
-        "sdf",
-        "movie",
-        "2000",
-        "10",
-        "descriptuion",
+        imdbid, movieName, year, score, description,
     }
+
+    if dbMovie.IMDBId == "" {
+        dbMovie = getMovieFromOmdb(requestURI);
+    }
+
     return dbMovie
 }
+

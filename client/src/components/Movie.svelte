@@ -25,7 +25,7 @@
         <p><strong>Score:</strong> {movie.Score}</p>
         <p><strong>Description:</strong> {movie.Description}</p>
       </div>
-    {:catch error}
-      <MovieError {error}/>
+    {:catch}
+      <MovieError/>
     {/await}
   </div>
