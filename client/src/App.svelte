@@ -1,6 +1,6 @@
 <script>
   import Form from './components/Form.svelte';
-  import Movie from './components/Movie.svelte';
+  import Result from './components/Result.svelte';
 
   let searching = false;
   let searchString;
@@ -17,7 +17,7 @@
     <Form on:search={handleSearch}/>
 
     {#if searching}
-      <Movie imdbid={searchString}/>
+      <Result imdbid={searchString}/>
     {/if}
   </div>
 </main>

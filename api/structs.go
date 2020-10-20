@@ -1,5 +1,9 @@
 package main
 
+type errorJson struct {
+    Error string            `json:"error"`
+}
+
 type movie struct {
     IMDBId string           `json:"IMDBId"`
     Name string             `json:"Name"`
@@ -30,13 +34,13 @@ type omdbMovie struct {
     Poster string         `json:"Poster"`
     Ratings []rating      `json:"Ratings"`
     Metascore string      `json:"Metascore"`
-    imdbRating string
+    ImdbRating string     `json:"ImdbRating"`
     imdbVotes string
-    imdbID string
+    ImdbID string         `json:"ImdbID"`
     Type string           `json:"Type"`
     DVD string            `json:"DVD"`
     BoxOffice string      `json:"BoxOffice"`
     Production string     `json:"Production"`
     Website string        `json:"Website"`
-    Response string       `json:"Response"`
+    Response bool       `json:"Response"`
 }

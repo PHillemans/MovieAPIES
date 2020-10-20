@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"strings"
 )
@@ -10,36 +11,25 @@ func getMovies() {
     return
 }
 
-func getMovie(requestURI string) (movie) {
+func getMovie(requestURI string) (movie, error) {
     var imdbId string
     imdbId = strings.Split(requestURI, "movies/")[1]
 
-    db := getDatabase();
-
-    query := "SELECT * FROM movies WHERE imdbid is ?;"
-
-    prep, _ := db.Prepare(query)
-    result := prep.QueryRow(imdbId)
-
-    var (
-        id string
-        imdbid string
-        movieName string
-        year string
-        score string
-        description string
-    )
-
-    result.Scan(&id, &imdbid, &movieName, &year, &score, &description)
-
-    dbMovie := movie{
-        imdbid, movieName, year, score, description,
+    if !isImdbId(imdbId) {
+        err := errors.New("Not a imdbId")
+        return movie{}, err
     }
+
+    dbMovie := getMovieFromDb(imdbId)
 
     if dbMovie.IMDBId == "" {
-        dbMovie = getMovieFromOmdb(requestURI);
+        omdbMovie, err := getMovieFromOmdb(imdbId)
+        if err != nil {
+            return movie{}, err
+        }
+        return omdbMovie, nil
     }
 
-    return dbMovie
+    return dbMovie, nil
 }
 

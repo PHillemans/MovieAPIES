@@ -39,8 +39,13 @@ func movieHandler(w http.ResponseWriter, req *http.Request) {
     setHeaders(&w) //TODO: Remove this on prod
     switch req.Method {
     case "GET":
-        movie := getMovie(req.RequestURI)
-        writeResponse(w, movie)
+        movie, err := getMovie(req.RequestURI)
+        if err != nil {
+            w.WriteHeader(http.StatusUnprocessableEntity)
+            writeErrorResponse(w, err)
+            return
+        }
+        writeMovieResponse(w, movie)
 
     case "POST":
         postMovie()

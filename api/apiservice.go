@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func writeResponse(w http.ResponseWriter, movie movie) {
+func writeMovieResponse(w http.ResponseWriter, movie movie) {
     if movie.IMDBId == "" {
         w.WriteHeader(http.StatusNotFound)
         w.Write([]byte("Could not find the movie you were looking for."))
@@ -13,4 +13,9 @@ func writeResponse(w http.ResponseWriter, movie movie) {
     }
 
     json.NewEncoder(w).Encode(movie)
+}
+
+func writeErrorResponse(w http.ResponseWriter, err error) {
+    errorResp := errorJson{err.Error()}
+    json.NewEncoder(w).Encode(errorResp)
 }
