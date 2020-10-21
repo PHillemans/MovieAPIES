@@ -6,9 +6,10 @@ import (
 	"strings"
 )
 
-func getMovies() {
+func getMovies() ([]movie) {
     log.Println("GET")
-    return
+    movies := getMoviesFromDb()
+    return movies
 }
 
 func getMovie(requestURI string) (movie, error) {
@@ -20,6 +21,7 @@ func getMovie(requestURI string) (movie, error) {
         return movie{}, err
     }
 
+    // Getting db from the database
     dbMovie := getMovieFromDb(imdbId)
 
     if dbMovie.IMDBId == "" {
@@ -29,6 +31,7 @@ func getMovie(requestURI string) (movie, error) {
         }
         return omdbMovie, nil
     }
+    log.Println("got from db")
 
     return dbMovie, nil
 }

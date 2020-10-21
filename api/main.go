@@ -7,7 +7,6 @@ import (
 
 func main() {
     createTable()
-    insertMovieInToDatabase(movie{"ttsdf","ttsdf","ttsdf","ttsdf","ttsdf"})
 
     var port string = ":8080"
     log.Printf("\n\nStarting server on port: %v\n", port)
@@ -23,8 +22,9 @@ func moviesHandler(w http.ResponseWriter, req *http.Request) {
     setHeaders(&w) //TODO: Remove this on prod
     switch req.Method {
         case "GET":
-            getMovies()
-            w.Write([]byte("something"))
+            log.Println(req.URL.Query())
+            movies := getMovies()
+            writeMoviesResponse(w, movies)
 
         case "POST":
             postMovies()
@@ -60,14 +60,14 @@ func insertMovieInToDatabase(newMovie movie) {
     db := getDatabase()
     defer db.Close()
 
-    query := "INSERT INTO MOVIES (imdbid, name, year, score, desc) VALUES (?, ?, ?, ?, ?)"
+    query := "INSERT INTO MOVIES (imdbid, name, year, score, desc, poster) VALUES (?, ?, ?, ?, ?, ?)"
     prep, err := db.Prepare(query)
     if err != nil {
         log.Println(err.Error())
         return
     }
 
-    prep.Exec(newMovie.IMDBId, newMovie.Name, newMovie.Year, newMovie.Score, newMovie.Description)
+    prep.Exec(newMovie.IMDBId, newMovie.Name, newMovie.Year, newMovie.Score, newMovie.Description, newMovie.Poster)
 }
 
 func createTable() {
@@ -81,7 +81,8 @@ func createTable() {
                 name TEXT,
                 year TEXT,
                 score TEXT,
-                desc TEXT
+                desc TEXT,
+                poster TEXT
             )`
 
     prep, err := db.Prepare(query)

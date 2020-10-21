@@ -10,6 +10,7 @@ type movie struct {
     Year string             `json:"Year"`
     Score string            `json:"Score"`
     Description string      `json:"Description"`
+    Poster string           `json:"Poster"`
 }
 
 type rating struct{

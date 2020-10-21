@@ -34,6 +34,7 @@ func isImdbId(id string) (bool) {
 
 func getMovieFromDb(requestId string) (movie) {
     db := getDatabase();
+    defer db.Close()
 
     query := "SELECT * FROM movies WHERE imdbid is ?;"
 
@@ -47,17 +48,47 @@ func getMovieFromDb(requestId string) (movie) {
         year string
         score string
         description string
+        poster string
     )
 
-    result.Scan(&id, &imdbid, &movieName, &year, &score, &description)
+    result.Scan(&id, &imdbid, &movieName, &year, &score, &description, &poster)
 
     dbMovie := movie{
-        imdbid, movieName, year, score, description,
+        imdbid, movieName, year, score, description, poster,
     }
     return dbMovie
 }
 
-func putMovieInDatabase(movie omdbMovie) {
+func getMoviesFromDb() ([]movie) {
+    db := getDatabase()
+    defer db.Close()
 
-    //TODO put into database
+    query := "SELECT * FROM movies"
+
+    prep,_ := db.Prepare(query)
+    var dbMovies []movie
+    results,_ := prep.Query()
+    for results.Next() {
+        var (
+            id string
+            imdbid string
+            name string
+            year string
+            score string
+            description string
+            poster string
+        )
+        results.Scan (&id, &imdbid, &name, &year, &score, &description, &poster)
+        dbMovie := movie{
+            imdbid,
+            name,
+            year,
+            score,
+            description,
+            poster,
+        }
+        dbMovies = append(dbMovies, dbMovie)
+    }
+
+    return dbMovies
 }

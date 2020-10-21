@@ -15,7 +15,7 @@ func getMovieFromOmdb(id string) (movie, error) {
     resp,err := http.Get(requestUrl + id)
     if err != nil {
         log.Print(err.Error())
-        return movie{}, errors.New("The api fucked up")
+        return movie{}, errors.New("There was no response from the api")
     }
 
     b,_ := ioutil.ReadAll(resp.Body)
@@ -28,13 +28,17 @@ func getMovieFromOmdb(id string) (movie, error) {
         return movie{}, errors.New("This movie does not exist")
     }
 
-    putMovieInDatabase(movie)
-
-    return movie{
+    imdbMovie := movie{
         omdbmovie.ImdbID,
         omdbmovie.Title,
         omdbmovie.Year,
         omdbmovie.ImdbRating,
         omdbmovie.Plot,
-    }, nil
+        omdbmovie.Poster,
+    }
+
+    insertMovieInToDatabase(imdbMovie)
+
+    return imdbMovie, nil
 }
+

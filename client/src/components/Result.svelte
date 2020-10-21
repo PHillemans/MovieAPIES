@@ -15,7 +15,7 @@
   }
 </script>
 
-<div>
+<div class="container">
   {#await search}
     <Loader/>
   {:then movie}
@@ -24,3 +24,12 @@
     <MovieError {error}/>
   {/await}
 </div>
+
+<style>
+  .container {
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    max-width: 70%;
+  }
+</style>

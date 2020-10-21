@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+func writeMoviesResponse(w http.ResponseWriter, movies []movie) {
+    json.NewEncoder(w).Encode(movies)
+}
+
 func writeMovieResponse(w http.ResponseWriter, movie movie) {
     if movie.IMDBId == "" {
         w.WriteHeader(http.StatusNotFound)
