@@ -3,7 +3,7 @@
   export let movie;
 </script>
 
-{#if !movie.error}
+{#if !movie.error && movie}
 
   <div class="movie">
     <div>
@@ -20,7 +20,7 @@
     <img class="image" src={movie.Poster} alt="moviePoster" />
   {/if}
 
-{:else}
+{:else if movie.error}
 
   <MovieError error={movie.error}/>
 

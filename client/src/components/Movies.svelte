@@ -26,7 +26,7 @@
 <style>
   .container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     flex-wrap: wrap;
   }
 </style>

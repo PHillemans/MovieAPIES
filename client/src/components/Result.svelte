@@ -6,9 +6,9 @@
 
   export let imdbid;
 
-  let search;
+  let search = false;
 
-  $: imdbid, search = handleSearch(imdbid);
+  $: imdbid, search = imdbid != undefined ? handleSearch(imdbid) : false;
 
   async function handleSearch(movieId) {
     return await apiService.getMovie(movieId);

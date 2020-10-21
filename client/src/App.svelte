@@ -3,7 +3,6 @@
   import Result from './components/Result.svelte';
   import Movies from './components/Movies.svelte';
 
-  let searching = false;
   let searchString;
 
   function handleSearch(e) {
@@ -15,10 +14,8 @@
 
 <main class="main">
   <div class="container">
-    {#if searching}
-      <Result imdbid={searchString}/>
-    {/if}
     <Form on:search={handleSearch}/>
+    <Result imdbid={searchString}/>
     <Movies/>
   </div>
 </main>
@@ -26,11 +23,10 @@
 <style>
   .main {
     margin: -8px;
-    background-color: #FFFFD1;
-    height: 100vh;
   }
 
   .container {
+    height: 100vh;
     padding: 20px;
     flex-direction: column;
     height: 130px;

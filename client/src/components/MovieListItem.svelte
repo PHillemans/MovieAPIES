@@ -15,17 +15,19 @@
 
 <style>
   h1 {
-    font-size: 1.3em;
+    font-size: 1em;
     height:30px;
   }
 
   .subTitle {
     display: flex;
+    font-size: 0.8em;
     justify-content: space-between;
     color: #7FC0FC;
   }
 
   .desc {
+    font-size: 0.9em;
     height: 100px;
     text-overflow: ellipsis;
     overflow:hidden;
@@ -40,9 +42,10 @@
     flex-direction: column;
     align-content: space-between;
     padding: 10px;
-    margin: 10px;
-    background: #FFF;
-    width: 300px;
+    margin: 40px 10px;
+    background: #FAFAFA;
+    box-shadow: inset 0px 0px 45px -27px rgba(0,0,0,0.25);
+    width: 200px;
     border-radius: 20px;
   }
 </style>
