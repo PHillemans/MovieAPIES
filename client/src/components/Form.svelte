@@ -17,7 +17,7 @@
   </h1>
 
   <form class="formpje" on:submit|preventDefault={emitSearch}>
-    <input bind:value={imdbID}>
+    <input bind:value={imdbID} placeholder="IMDB id"/>
     <button type="submit" class="btn-search">Search</button>
   </form>
 </div>
