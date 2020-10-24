@@ -31,8 +31,6 @@
 <style>
   .container {
     display:flex;
-    justify-content: space-between;
-    flex-direction: row;
-    max-width: 90%;
+    justify-content: center;
   }
 </style>

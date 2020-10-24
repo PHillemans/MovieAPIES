@@ -6,8 +6,8 @@
 <div class="movieContainer">
 {#if !movie.error && movie}
 
-  <div class="movie">
-    <div>
+  <div >
+    <div class="movie">
       <p><strong>Name:</strong> {movie.Name}</p>
       <p><strong>Year:</strong> {movie.Year}</p>
       <p><strong>Score:</strong> {movie.Score}</p>
@@ -30,7 +30,6 @@
 
 <style>
   .movieContainer {
-    transition: height 2s;
     display:flex;
     justify-content: space-between;
     flex-direction: row;
@@ -40,7 +39,7 @@
   .movie {
     background-color: #EAECFF;
     box-shadow: 10px 10px 45px -27px rgba(0,0,0,0.25);
-    padding-left: 10px;
+    padding: 20px;
     border-radius: 5px;
   }
 
@@ -56,8 +55,7 @@
 
   .image{
     margin-left: 5%;
-    width: 30%;
-    height: auto;
+    height: 400px;
     border: 2px solid blue;
     border-radius: 20px;
     background-color: blue;

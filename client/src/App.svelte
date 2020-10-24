@@ -11,6 +11,7 @@
   function handleSearch(e) {
     newResult = false;
     searchString = e.detail.id;
+    movie = false;
   }
 
   function handleSelected(e) {
