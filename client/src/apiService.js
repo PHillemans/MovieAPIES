@@ -9,8 +9,22 @@ async function getMovie(movie) {
     return await body;
 }
 
-async function getMovies() {
-    let url = `http://localhost:8080/movies?wow=wow`;
+async function getMovies(page) {
+    if (page === undefined) {
+        return
+    }
+    let url = `http://localhost:8080/movies?page=${page}`;
+    let res = await fetch(url, {
+        method: "get",
+        mode: 'cors',
+        credentials: 'same-origin'
+    });
+    let body = await res.json();
+    return await body;
+}
+
+async function movieAmount(){
+    let url = `http://localhost:8080/movieamount`;
     let res = await fetch(url, {
         method: "get",
         mode: 'cors',
@@ -22,5 +36,6 @@ async function getMovies() {
 
 module.exports = {
     getMovie,
-    getMovies
+    getMovies,
+    movieAmount
 }

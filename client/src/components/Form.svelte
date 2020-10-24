@@ -12,9 +12,10 @@
 </script>
 
 <div class="form-container">
-  <div class="form-title">
+  <h1 class="form-title">
     Search for a movie by IMDBId:
-  </div>
+  </h1>
+
   <form class="formpje" on:submit|preventDefault={emitSearch}>
     <input bind:value={imdbID}>
     <button type="submit" class="btn-search">Search</button>
@@ -22,12 +23,18 @@
 </div>
 
 <style>
+  input {
+    border: 1px solid #12AADD;
+  }
   .form-title {
     padding: 20px;
   }
 
   .btn-search {
-    background-color: #1200dd;
+    margin-left:-10px;
+    border: #12AADD;
+    background-color: #12AADD;
+    height: 32px;
     color: white;
   }
 
@@ -37,5 +44,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 40px;
   }
   </style>

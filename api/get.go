@@ -6,8 +6,18 @@ import (
 	"strings"
 )
 
-func getMovies() ([]movie) {
-    log.Println("GET")
+func getMovieAmount() (int) {
+    count := movieCount()
+    return count
+}
+
+func getMovies(page int) ([]movie) {
+    offset := page * 10
+    movies := getMoviesFromDbWithOffset(offset)
+    return movies
+}
+
+func getAllMovies() ([]movie) {
     movies := getMoviesFromDb()
     return movies
 }

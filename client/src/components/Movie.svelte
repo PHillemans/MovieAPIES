@@ -3,6 +3,7 @@
   export let movie;
 </script>
 
+<div class="movieContainer">
 {#if !movie.error && movie}
 
   <div class="movie">
@@ -25,13 +26,21 @@
   <MovieError error={movie.error}/>
 
 {/if}
+</div>
 
 <style>
-  .movie {
-    background-color: #FCFFFC;
-    box-shadow: 10px black;
+  .movieContainer {
+    transition: height 2s;
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
     max-width: 70%;
-    padding: 10px;
+  }
+
+  .movie {
+    background-color: #EAECFF;
+    box-shadow: 10px 10px 45px -27px rgba(0,0,0,0.25);
+    padding-left: 10px;
     border-radius: 5px;
   }
 
@@ -39,8 +48,10 @@
     margin-top: 2px;
     max-width:90%;
     display:flex;
-    text-align: center;
-    font-size: 0.9em;
+    font-size: 0.85em;
+    color: #666666;
+    font-weight: bold;
+    padding:5px;
   }
 
   .image{

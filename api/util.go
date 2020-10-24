@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"regexp"
+	"strconv"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -57,6 +58,61 @@ func getMovieFromDb(requestId string) (movie) {
         imdbid, movieName, year, score, description, poster,
     }
     return dbMovie
+}
+
+func movieCount() (int) {
+    db := getDatabase()
+    defer db.Close()
+
+    query := "SELECT COUNT(imdbid) FROM movies"
+    prep,_ := db.Prepare(query)
+    result := prep.QueryRow()
+    var count int
+    result.Scan(&count)
+    return count
+}
+
+func getMoviesFromDbWithOffset(offset int) ([]movie) {
+    db := getDatabase()
+    defer db.Close()
+
+    query := "SELECT * FROM movies ORDER BY id DESC LIMIT "+ strconv.Itoa(offset) +",10;"
+
+    prep,err := db.Prepare(query)
+    if err != nil {
+        log.Println(err.Error())
+        log.Fatalln("prep")
+    }
+
+    var dbMovies []movie
+
+    results, err := prep.Query()
+    if err != nil {
+        log.Fatalln(err.Error())
+    }
+    for results.Next() {
+        var (
+            id string
+            imdbid string
+            name string
+            year string
+            score string
+            description string
+            poster string
+        )
+        results.Scan (&id, &imdbid, &name, &year, &score, &description, &poster)
+        dbMovie := movie{
+            imdbid,
+            name,
+            year,
+            score,
+            description,
+            poster,
+        }
+        dbMovies = append(dbMovies, dbMovie)
+    }
+
+    return dbMovies
 }
 
 func getMoviesFromDb() ([]movie) {

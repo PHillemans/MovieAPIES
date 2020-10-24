@@ -4,6 +4,7 @@
   import MovieError from './MovieError.svelte';
   import Loader from './Loader.svelte';
 
+  export let newResult;
   export let imdbid;
 
   let search = false;
@@ -11,7 +12,9 @@
   $: imdbid, search = imdbid != undefined ? handleSearch(imdbid) : false;
 
   async function handleSearch(movieId) {
-    return await apiService.getMovie(movieId);
+    let results = await apiService.getMovie(movieId);
+    newResult = true;
+    return await results;
   }
 </script>
 
@@ -30,6 +33,6 @@
     display:flex;
     justify-content: space-between;
     flex-direction: row;
-    max-width: 70%;
+    max-width: 90%;
   }
 </style>

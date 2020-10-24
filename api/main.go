@@ -1,8 +1,9 @@
 package main
 
 import (
-    "net/http"
-    "log"
+	"log"
+	"net/http"
+	"strconv"
 )
 
 func main() {
@@ -14,16 +15,32 @@ func main() {
     // single movie
     http.HandleFunc("/movies", moviesHandler)
     http.HandleFunc("/movies/", movieHandler)
+    http.HandleFunc("/movieamount", amountHandler)
 
     http.ListenAndServe(port, nil)
+}
+
+func amountHandler(w http.ResponseWriter, req *http.Request) {
+    setHeaders(&w)
+    if (req.Method != "GET") {
+        return
+    }
+    amount := strconv.Itoa(getMovieAmount())
+    w.Write([]byte(amount))
 }
 
 func moviesHandler(w http.ResponseWriter, req *http.Request) {
     setHeaders(&w) //TODO: Remove this on prod
     switch req.Method {
         case "GET":
-            log.Println(req.URL.Query())
-            movies := getMovies()
+            page := req.URL.Query()["page"][0]
+            var movies []movie
+            pageParam,_ := strconv.Atoi(page)
+            if len(page) > 1 || pageParam > 0 {
+                movies = getMovies(pageParam - 1)
+            } else {
+                movies = getAllMovies()
+            }
             writeMoviesResponse(w, movies)
 
         case "POST":
@@ -39,7 +56,7 @@ func movieHandler(w http.ResponseWriter, req *http.Request) {
     setHeaders(&w) //TODO: Remove this on prod
     switch req.Method {
     case "GET":
-        movie, err := getMovie(req.RequestURI)
+            movie, err := getMovie(req.RequestURI)
         if err != nil {
             w.WriteHeader(http.StatusUnprocessableEntity)
             writeErrorResponse(w, err)
